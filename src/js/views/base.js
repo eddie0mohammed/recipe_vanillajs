@@ -5,6 +5,7 @@ export const domElements = {
 
     resultsList: document.querySelector('.results__list'),
     resultSection: document.querySelector('.results'),
+    buttonsPagination: document.querySelector('.results__pages'),
 
 }
 
