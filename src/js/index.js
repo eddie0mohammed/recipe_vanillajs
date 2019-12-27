@@ -4,6 +4,7 @@ import Search from './models/Search';
 
 import {domElements, renderLoader, clearLoader } from './views/base';
 import * as searchView from './views/searchView';
+import * as recipeView from './views/recipeView';
 import Recipe from './models/Recipe';
 
 
@@ -60,12 +61,6 @@ domElements.searchForm.addEventListener('submit', (e) => {
     controlSearch();
 });
 
-// // TESTING
-// window.addEventListener('load', e => {
-//     e.preventDefault();
-//     controlSearch();
-// })
-
 
 //event listener for pagination buttons
 
@@ -96,13 +91,18 @@ const controlRecipe = async () => {
 
     if (hashID){
         //prepare UI for changes
+        recipeView.clearExistingRecipe();
+        renderLoader(domElements.recipe);
 
+
+        //highlight selected recipe
+        if (state.search)
+            searchView.highlightSelected(hashID);
 
         //create new Recipe object
         state.recipe = new Recipe(hashID);
 
-        // // TESTING
-        // window.r = state.recipe;
+    
 
         try{
              //get recipe data and parseIngredients
@@ -114,8 +114,8 @@ const controlRecipe = async () => {
             state.recipe.calcServings();
 
             //render Recipe
-            console.log(state.recipe);
-            console.log(state.recipe.ingredients);
+            clearLoader();
+            recipeView.renderRecipe(state.recipe);
 
         }catch(err){
             console.log(err);
@@ -130,9 +130,26 @@ const controlRecipe = async () => {
 }
 
 // //event listener for hash change (url)
-// window.addEventListener('hashchange', controlRecipe);
+    // window.addEventListener('hashchange', controlRecipe);
 // //event listener when window load and there is a hash
-// window.addEventListener('load', controlRecipe);
+    // window.addEventListener('load', controlRecipe);
 ['hashchange', 'load'].forEach(elem => {
     window.addEventListener(elem, controlRecipe);
+})
+
+
+//handling recipe button clicks
+domElements.recipe.addEventListener('click', (e) => {
+    if (e.target.matches('.btn-decrease,  .btn-decrease *')){
+        //decrease button is clicked
+        if (state.recipe.servings > 1){
+            state.recipe.updateServings('dec');
+            recipeView.updateServingsIngredients(state.recipe);
+        }
+
+    }else if (e.target.matches('.btn-increase,  .btn-increase *')){
+        state.recipe.updateServings('inc');
+        recipeView.updateServingsIngredients(state.recipe);
+    }
+    // console.log(state.recipe);
 })

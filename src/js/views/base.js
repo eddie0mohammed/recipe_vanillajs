@@ -7,6 +7,7 @@ export const domElements = {
     resultSection: document.querySelector('.results'),
     buttonsPagination: document.querySelector('.results__pages'),
 
+    recipe: document.querySelector('.recipe'),
 }
 
 
