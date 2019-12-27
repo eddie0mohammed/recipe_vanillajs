@@ -8,6 +8,10 @@ export const domElements = {
     buttonsPagination: document.querySelector('.results__pages'),
 
     recipe: document.querySelector('.recipe'),
+
+    shopping: document.querySelector('.shopping__list'),
+    likesMenu: document.querySelector('.likes__field'),
+    likesList: document.querySelector('.likes__list'),
 }
 
 
